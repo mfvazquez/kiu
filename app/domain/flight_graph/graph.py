@@ -1,6 +1,8 @@
 import networkx as nx
+from typing import List, Tuple
 
 from app.services.flight_events import FlightEvent
+from .exceptions import EdgeNotFoundError
 
 
 class FlightGraph:
@@ -35,10 +37,26 @@ class FlightGraph:
             flight.departure_city,
             flight.arrival_city,
             key=edge_key,
-            flight_number=flight.flight_number,
-            departure_city=flight.departure_city,
-            arrival_city=flight.arrival_city,
-            departure_time=flight.departure_datetime,
-            arrival_time=flight.arrival_datetime
-        ) 
+            flight_event=flight
+        )
+
+    def get_flight_details(self, edge: Tuple[str, str, str]) -> FlightEvent:
+        """Get complete flight information for an edge"""
+        try:
+            return self.graph.edges[edge]['flight_event']
+        except KeyError:
+            raise EdgeNotFoundError(edge)
+
+    def find_paths(
+        self,
+        origin: str,
+        destination: str,
+        max_flights: int
+    ) -> List[List[Tuple[str, str, str]]]:
+        return list(nx.all_simple_edge_paths(
+            self.graph,
+            origin,
+            destination,
+            cutoff=max_flights
+        ))
         
