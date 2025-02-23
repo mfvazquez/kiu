@@ -7,6 +7,9 @@ from app.services.flight_events import FlightEvent
 from app.domain.journey.validators import DefaultJourneyValidator
 from app.domain.journey.builders import DefaultJourneyPathBuilder
 from app.domain.journey.sorters import TimeAndConnectionsSorter
+from app.domain.flight_graph.exceptions import (
+    AirportNotFoundError,
+)
 
 
 @pytest.fixture
@@ -153,3 +156,51 @@ def test_flight_search_before_departure_date_returns_empty_list(
     )
 
     assert len(journeys) == 0
+
+
+def test_search_unreachable_destination(journey_finder: JourneyFinder):
+    """Should return empty list if destination is unreachable"""
+    journeys = journey_finder.find_journeys(
+        origin="BUE",
+        destination="TYO",
+        departure_date=datetime(2024, 9, 12).date(),
+    )
+
+    assert len(journeys) == 0
+
+
+def test_find_paths_nonexistent_origin(journey_finder: JourneyFinder):
+    """Should raise AirportNotFoundError when origin doesn't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        journey_finder.find_journeys(
+            origin="XXX",  # Non-existent airport
+            destination="LON",
+            departure_date=datetime(2024, 9, 12).date(),
+        )
+    assert "Origin city 'XXX' not found" in str(exc_info.value)
+
+
+def test_find_paths_nonexistent_destination(
+    journey_finder: JourneyFinder,
+):
+    """Should raise AirportNotFoundError when destination doesn't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        journey_finder.find_journeys(
+            origin="BUE",
+            destination="XXX",  # Non-existent airport
+            departure_date=datetime(2024, 9, 12).date(),
+        )
+    assert "Destination city 'XXX' not found" in str(exc_info.value)
+
+
+def test_find_paths_both_airports_nonexistent(
+    journey_finder: JourneyFinder,
+):
+    """Should raise AirportNotFoundError when both airports don't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        journey_finder.find_journeys(
+            origin="YYY",
+            destination="XXX",
+            departure_date=datetime(2024, 9, 12).date(),
+        )
+    assert "Origin city 'YYY' not found" in str(exc_info.value)
