@@ -105,7 +105,8 @@ def test_get_flight_details_of_nonexistent_edge(
 
     assert (
         str(exc_info.value)
-        == "Edge ('BUE', 'BER', 'BA123_2024-09-12T08:00:00') does not exist in the graph"
+        == ("Edge ('BUE', 'BER', 'BA123_2024-09-12T08:00:00')"
+            " does not exist in the graph")
     )
 
 

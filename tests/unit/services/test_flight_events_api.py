@@ -45,7 +45,7 @@ async def mock_httpx_client(sample_api_response):
     mock_response.status_code = 200
     mock_response.json.return_value = sample_api_response
     mock_response.raise_for_status.return_value = None
-    
+
     mock_client.get.return_value = mock_response
     mock_client.__aenter__.return_value = mock_client
     mock_client.__aexit__.return_value = None

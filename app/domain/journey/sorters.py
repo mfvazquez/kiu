@@ -10,8 +10,7 @@ class TimeAndConnectionsSorter:
             return (
                 journey.path[-1].arrival_time - journey.path[0].departure_time
             )
-        
+
         return sorted(
-            journeys, 
-            key=lambda j: (get_total_time(j), j.connections)
-        ) 
+            journeys, key=lambda j: (get_total_time(j), j.connections)
+        )

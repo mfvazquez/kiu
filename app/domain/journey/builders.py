@@ -2,6 +2,7 @@ from typing import List, Tuple
 from app.models.journey import PathFlight
 from ..flight_graph import FlightGraph
 
+
 class DefaultJourneyPathBuilder:
     def build_path(
         self, path: List[Tuple[str, str, str]], graph: FlightGraph

@@ -1,6 +1,4 @@
 from datetime import datetime
-from typing import List
-from dataclasses import dataclass
 from pydantic import BaseModel
 
 

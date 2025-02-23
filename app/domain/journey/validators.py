@@ -1,8 +1,6 @@
 from datetime import datetime, date, timedelta
-from typing import List, Tuple
 
 from app.models.journey import Journey
-from app.domain.flight_graph import FlightGraph
 
 
 class DefaultJourneyValidator:

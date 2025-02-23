@@ -2,7 +2,12 @@ from datetime import date
 from typing import List
 
 from app.models.journey import Journey
-from .protocols import JourneyPathBuilder, JourneySorter, PathPreprocessor, JourneyValidator
+from .protocols import (
+    JourneyPathBuilder,
+    JourneySorter,
+    PathPreprocessor,
+    JourneyValidator,
+)
 from ..flight_graph import FlightGraph
 
 

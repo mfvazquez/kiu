@@ -1,19 +1,17 @@
-import os
 import httpx
-from typing import List, Optional
+from typing import List
 from pydantic import ValidationError
 
-from .interface import FlightEvent
-from .exceptions import FlightEventsAPIError, FlightEventsConfigError
+from .types import FlightEvent
+from .exceptions import FlightEventsAPIError
 
 
 class FlightEventsAPIService:
     """Service to fetch flight events from external API"""
 
-    def __init__(self, api_url: Optional[str] = None):
-        self.api_url = api_url or os.getenv("FLIGHT_EVENTS_URL")
-        if not self.api_url:
-            raise FlightEventsConfigError("API URL not provided")
+    def __init__(self, api_url: str, timeout: float = 30.0):
+        self.api_url = api_url
+        self.timeout = timeout
 
     async def get_flight_events(self) -> List[FlightEvent]:
         """
@@ -24,11 +22,13 @@ class FlightEventsAPIService:
         """
         try:
             async with httpx.AsyncClient() as client:
-                response = await client.get(self.api_url, timeout=30.0)
+                response = await client.get(self.api_url, timeout=self.timeout)
                 response.raise_for_status()
 
                 raw_events = response.json()
-                return [FlightEvent.model_validate(event) for event in raw_events]
+                return [
+                    FlightEvent.model_validate(event) for event in raw_events
+                ]
 
         except httpx.HTTPError as e:
             raise FlightEventsAPIError(

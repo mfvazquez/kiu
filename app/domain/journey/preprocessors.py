@@ -6,18 +6,12 @@ from app.domain.journey.protocols import JourneyValidator
 
 
 class PathPreprocessor:
-    def __init__(
-        self, 
-        graph: FlightGraph,
-        validator: JourneyValidator
-    ):
+    def __init__(self, graph: FlightGraph, validator: JourneyValidator):
         self.graph = graph
         self.validator = validator
 
     def preprocess(
-        self, 
-        paths: List[List[Tuple[str, str, str]]], 
-        departure_date: date
+        self, paths: List[List[Tuple[str, str, str]]], departure_date: date
     ) -> List[List[Tuple[str, str, str]]]:
         """Filter and transform paths before building journeys"""
         valid_paths = []
@@ -26,7 +20,9 @@ class PathPreprocessor:
                 valid_paths.append(path)
         return valid_paths
 
-    def _is_valid_path(self, path: List[Tuple[str, str, str]], departure_date: date) -> bool:
+    def _is_valid_path(
+        self, path: List[Tuple[str, str, str]], departure_date: date
+    ) -> bool:
         """Quick validation of paths before building journeys"""
         if not path:
             return False
@@ -47,4 +43,4 @@ class PathPreprocessor:
             ):
                 return False
 
-        return True 
+        return True

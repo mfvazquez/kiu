@@ -40,9 +40,7 @@ class JourneyValidator(Protocol):
 
 class PathPreprocessor(Protocol):
     def preprocess(
-        self, 
-        paths: List[List[Tuple[str, str, str]]], 
-        departure_date: date
+        self, paths: List[List[Tuple[str, str, str]]], departure_date: date
     ) -> List[List[Tuple[str, str, str]]]:
         """
         Preprocess and validate path before building journey.
