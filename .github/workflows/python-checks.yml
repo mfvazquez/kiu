@@ -45,7 +45,7 @@ jobs:
       run: |
         flake8 app tests --exclude=__init__.py
 
-  pytest:
+  pytest unit:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -61,5 +61,7 @@ jobs:
         pip install -r requirements-dev.txt
 
     - name: Run pytest
+      env:
+        PYTHONPATH: ${{ github.workspace }}
       run: |
-        pytest tests/ 
+        pytest tests/unit/
