@@ -17,9 +17,9 @@ FROM python:3.12.5-slim-bullseye
 
 WORKDIR /app
 
-# Copy requirements and install runtime dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copy dependencies from builder stage
+COPY --from=builder /usr/local/lib/python3.12/site-packages/ /usr/local/lib/python3.12/site-packages/
+COPY --from=builder /usr/local/bin/uvicorn /usr/local/bin/uvicorn
 
 # Copy application code
 COPY app app/
