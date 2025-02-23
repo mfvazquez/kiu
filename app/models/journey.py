@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import List
 from dataclasses import dataclass
@@ -11,8 +11,7 @@ class PathFlight(BaseModel):
     departure_time: datetime
     arrival_time: datetime
 
-    class Config:
-        populate_by_name = True
+    model_config = ConfigDict(populate_by_name=True)
 
 
 @dataclass
