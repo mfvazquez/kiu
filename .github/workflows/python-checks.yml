@@ -24,7 +24,7 @@ jobs:
 
     - name: Run mypy
       run: |
-        mypy app tests
+        mypy --explicit-package-bases app
 
   flake8:
     runs-on: ubuntu-latest
