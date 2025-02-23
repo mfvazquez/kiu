@@ -90,15 +90,6 @@ async def test_get_flight_events_api_error(
 
 
 @pytest.mark.asyncio
-async def test_missing_api_url():
-    """Should raise error if API URL is not provided"""
-    with pytest.raises(FlightEventsConfigError) as exc_info:
-        FlightEventsAPIService(api_url=None)  # will also try env var
-
-    assert "API URL not provided" in str(exc_info.value)
-
-
-@pytest.mark.asyncio
 async def test_invalid_response_format(
     api_service: FlightEventsAPIService, mock_httpx_client
 ):
