@@ -84,5 +84,11 @@ jobs:
     - name: Run pytest
       env:
         PYTHONPATH: ${{ github.workspace }}
+        FLIGHT_EVENTS_URL: "https://mock.apidog.com/m1/814105-793312-default/flight-events"
+        MIN_WAIT_TIME_HOURS: "1"
+        MAX_WAIT_TIME_HOURS: "4"
+        MAX_FLIGHT_DURATION_HOURS: "24"
+        MAX_FLIGHT_EVENTS: "2"
+        CACHE_TTL_SECONDS: "600"
       run: |
         pytest tests/integration/
