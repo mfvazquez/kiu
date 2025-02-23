@@ -12,9 +12,9 @@ class FlightGraph:
     Flights are directional (from origin to destination).
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Initialize the flight graph"""
-        self.graph = nx.MultiDiGraph()
+        self.graph: nx.MultiDiGraph = nx.MultiDiGraph()
 
     def _create_edge_key(self, flight: FlightEvent) -> str:
         """Creates a unique key for a flight edge"""
@@ -43,7 +43,7 @@ class FlightGraph:
     def get_flight_details(self, edge: Tuple[str, str, str]) -> FlightEvent:
         """Get complete flight information for an edge"""
         try:
-            return self.graph.edges[edge]["flight_event"]
+            return self.graph.edges[edge]["flight_event"]  # type: ignore
         except KeyError:
             raise EdgeNotFoundError(edge)
 
@@ -64,7 +64,7 @@ class FlightGraph:
         """
         return list(
             nx.all_simple_edge_paths(  # type: ignore[arg-type]
-                self.graph,  # type: ignore[arg-type]
+                self.graph,
                 origin,  # type: ignore[arg-type]
                 destination,  # type: ignore[arg-type]
                 cutoff=max_flights,
