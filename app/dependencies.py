@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+from fastapi_cache.decorator import cache
 
 from app.domain.flight_graph import FlightGraph
 from app.domain.journey.journey_finder import JourneyFinder
@@ -23,9 +24,11 @@ def get_flight_events_service() -> FlightEventsAPIService:
     return FlightEventsAPIService(api_url=api_url)
 
 
+@cache(expire=600)  # 10 minutos
 async def get_flight_graph(
     service: FlightEventsAPIService = Depends(get_flight_events_service),
 ) -> FlightGraph:
+    """Get flight graph with 10 minute cache"""
     graph = FlightGraph()
     events = await service.get_flight_events()
     for event in events:
