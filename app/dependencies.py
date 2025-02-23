@@ -24,7 +24,7 @@ def get_flight_events_service() -> FlightEventsAPIService:
     return FlightEventsAPIService(api_url=api_url)
 
 
-@cache(expire=600)  # 10 minutos
+@cache(expire=int(os.getenv("CACHE_TTL_SECONDS", "600")))
 async def get_flight_graph(
     service: FlightEventsAPIService = Depends(get_flight_events_service),
 ) -> FlightGraph:
