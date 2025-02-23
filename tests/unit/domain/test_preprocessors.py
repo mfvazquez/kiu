@@ -70,11 +70,11 @@ def graph():
 
 
 @pytest.fixture
-def preprocessor(graph, validator):
+def preprocessor(graph: FlightGraph, validator: DefaultJourneyValidator):
     return PathPreprocessor(graph, validator)
 
 
-def test_empty_paths(preprocessor):
+def test_empty_paths(preprocessor: PathPreprocessor):
     """Should handle empty path list"""
     paths: list = []
     departure_date = date(2024, 9, 12)
@@ -82,7 +82,7 @@ def test_empty_paths(preprocessor):
     assert preprocessor.preprocess(paths, departure_date) == []
 
 
-def test_invalid_empty_path(preprocessor):
+def test_invalid_empty_path(preprocessor: PathPreprocessor):
     """Should filter out empty paths"""
     paths = [[]]  # List with one empty path
     departure_date = date(2024, 9, 12)
@@ -90,7 +90,7 @@ def test_invalid_empty_path(preprocessor):
     assert preprocessor.preprocess(paths, departure_date) == []
 
 
-def test_valid_direct_flight(preprocessor, graph):
+def test_valid_direct_flight(preprocessor: PathPreprocessor):
     """Should accept valid direct flights"""
     paths = [[("BUE", "LON", "BA200_2024-09-12T09:00:00")]]
     departure_date = date(2024, 9, 12)
@@ -100,7 +100,7 @@ def test_valid_direct_flight(preprocessor, graph):
     assert valid_paths[0] == paths[0]
 
 
-def test_valid_connection(preprocessor, graph):
+def test_valid_connection(preprocessor: PathPreprocessor):
     """Should accept valid connections"""
     paths = [
         [
@@ -115,7 +115,7 @@ def test_valid_connection(preprocessor, graph):
     assert valid_paths[0] == paths[0]
 
 
-def test_invalid_connection_time(preprocessor, graph):
+def test_invalid_connection_time(preprocessor: PathPreprocessor):
     """Should filter out paths with invalid connection times"""
     paths = [
         [
@@ -132,7 +132,7 @@ def test_invalid_connection_time(preprocessor, graph):
     assert preprocessor.preprocess(paths, departure_date) == []
 
 
-def test_invalid_departure_date(preprocessor, graph):
+def test_invalid_departure_date(preprocessor: PathPreprocessor):
     """Should filter out paths starting before departure date"""
     paths = [[("BUE", "MAD", "IB303_2024-09-11T08:00:00")]]  # Day before
     departure_date = date(2024, 9, 12)
@@ -140,7 +140,7 @@ def test_invalid_departure_date(preprocessor, graph):
     assert preprocessor.preprocess(paths, departure_date) == []
 
 
-def test_mixed_valid_invalid_paths(preprocessor, graph):
+def test_mixed_valid_invalid_paths(preprocessor: PathPreprocessor):
     """Should filter invalid paths while keeping valid ones"""
     paths = [
         # Valid direct flight

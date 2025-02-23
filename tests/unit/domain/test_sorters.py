@@ -26,7 +26,9 @@ def test_empty_journeys(sorter):
     assert sorter.sort([]) == []
 
 
-def test_sort_by_total_time(sorter, sample_path_flight):
+def test_sort_by_total_time(
+    sorter: TimeAndConnectionsSorter, sample_path_flight: PathFlight
+):
     """Should sort primarily by total journey time"""
     # Create two journeys with same connections but different duration
     path1 = [
@@ -57,7 +59,9 @@ def test_sort_by_total_time(sorter, sample_path_flight):
     assert sorted_journeys == [journey1, journey2]
 
 
-def test_sort_by_connections_when_same_time(sorter, sample_path_flight):
+def test_sort_by_connections_when_same_time(
+    sorter: TimeAndConnectionsSorter, sample_path_flight: PathFlight
+):
     """Should use connections as secondary sort criteria"""
     # Create two journeys with same total time but different connections
     path1 = [sample_path_flight]  # 2h, 0 connections
