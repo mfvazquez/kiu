@@ -3,7 +3,7 @@ import pytest_asyncio
 import httpx
 from datetime import datetime
 from typing import List
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 from app.services.flight_events import FlightEvent
 from app.services.flight_events.flight_events_api import FlightEventsAPIService
@@ -41,13 +41,11 @@ def sample_api_response() -> List[dict]:
 @pytest_asyncio.fixture
 async def mock_httpx_client(sample_api_response):
     mock_client = AsyncMock()
-    mock_response = AsyncMock()
+    mock_response = Mock()
     mock_response.status_code = 200
-
-    def json():
-        return sample_api_response
-
-    mock_response.json = json
+    mock_response.json.return_value = sample_api_response
+    mock_response.raise_for_status.return_value = None
+    
     mock_client.get.return_value = mock_response
     mock_client.__aenter__.return_value = mock_client
     mock_client.__aexit__.return_value = None
@@ -105,13 +103,10 @@ async def test_invalid_response_format(
     api_service: FlightEventsAPIService, mock_httpx_client
 ):
     """Should handle invalid response format"""
-    mock_response = AsyncMock()
+    mock_response = Mock()
     mock_response.status_code = 200
-
-    def json():
-        return [{"invalid": "data"}]
-
-    mock_response.json = json
+    mock_response.json.return_value = [{"invalid": "data"}]
+    mock_response.raise_for_status.return_value = None
     mock_httpx_client.get.return_value = mock_response
 
     with patch("httpx.AsyncClient", return_value=mock_httpx_client):
