@@ -7,10 +7,7 @@ from unittest.mock import AsyncMock, Mock, patch
 
 from app.services.flight_events import FlightEvent
 from app.services.flight_events.flight_events_api import FlightEventsAPIService
-from app.services.flight_events.exceptions import (
-    FlightEventsAPIError,
-    FlightEventsConfigError,
-)
+from app.services.flight_events.exceptions import FlightEventsAPIError
 
 
 @pytest_asyncio.fixture
