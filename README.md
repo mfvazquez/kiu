@@ -47,12 +47,12 @@ With the server running, you can access:
 ### Search Journeys
 
 ```
-GET /search?from={origin}&to={destination}&departure_date={YYYY-MM-DD}
+GET /journeys/search?from={origin}&to={destination}&departure_date={YYYY-MM-DD}
 ```
 
 Example:
 ```bash
-curl "http://localhost:8000/search?from=MAD&to=BUE&departure_date=2024-03-20"
+curl "http://localhost:8000/journeys/search?from=MAD&to=BUE&departure_date=2024-03-20"
 ```
 
 ## Configuration
