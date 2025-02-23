@@ -18,7 +18,7 @@ def journey_finder(flight_graph_with_flights: FlightGraph):
     )
     path_builder = DefaultJourneyPathBuilder()
     sorter = TimeAndConnectionsSorter()
-    
+
     return JourneyFinder(
         flight_graph=flight_graph_with_flights,
         validator=validator,
@@ -100,7 +100,7 @@ def complex_journey_finder(complex_graph: FlightGraph):
     )
     path_builder = DefaultJourneyPathBuilder()
     sorter = TimeAndConnectionsSorter()
-    
+
     return JourneyFinder(
         flight_graph=complex_graph,
         validator=validator,

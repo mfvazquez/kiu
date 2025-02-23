@@ -1,5 +1,5 @@
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from app.models.journey import Journey, PathFlight
 from app.domain.journey.sorters import TimeAndConnectionsSorter
@@ -82,4 +82,4 @@ def test_sort_by_connections_when_same_time(sorter, sample_path_flight):
     journey2 = Journey(connections=1, path=path2)
 
     sorted_journeys = sorter.sort([journey2, journey1])
-    assert sorted_journeys == [journey1, journey2] 
+    assert sorted_journeys == [journey1, journey2]
