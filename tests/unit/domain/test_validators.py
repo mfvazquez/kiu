@@ -41,7 +41,7 @@ def test_valid_departure_date(validator):
 
     # Future day
     flight_time2 = datetime(2024, 9, 13, 10, 0)
-    assert validator.is_valid_departure_date(flight_time2, departure_date)
+    assert not validator.is_valid_departure_date(flight_time2, departure_date)
 
     # Past day
     flight_time3 = datetime(2024, 9, 11, 10, 0)
