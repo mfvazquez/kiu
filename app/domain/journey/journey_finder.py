@@ -5,10 +5,10 @@ from app.models.journey import Journey
 from .protocols import (
     JourneyPathBuilder,
     JourneySorter,
-    PathPreprocessor,
     JourneyValidator,
 )
 from ..flight_graph import FlightGraph
+from .preprocessors import PathPreprocessor
 
 
 class JourneyFinder:
@@ -24,7 +24,6 @@ class JourneyFinder:
         validator: JourneyValidator,
         path_builder: JourneyPathBuilder,
         sorter: JourneySorter,
-        preprocessor: PathPreprocessor,
         max_flight_events: int = 2,
     ):
         """
@@ -35,15 +34,14 @@ class JourneyFinder:
             validator: Validator for journey constraints
             path_builder: Builder for journey paths
             sorter: Sorter for journeys
-            preprocessor: Preprocessor for paths
             max_flight_events: Maximum number of flight events allowed
         """
         self.flight_graph = flight_graph
         self.validator = validator
         self.path_builder = path_builder
         self.sorter = sorter
-        self.preprocessor = preprocessor
         self.max_flight_events = max_flight_events
+        self.preprocessor = PathPreprocessor(flight_graph, validator)
 
     def find_journeys(
         self, origin: str, destination: str, departure_date: date

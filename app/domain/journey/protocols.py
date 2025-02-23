@@ -36,14 +36,3 @@ class JourneyValidator(Protocol):
     def is_valid_total_time(self, journey: Journey) -> bool:
         """Check if total journey time is within limits"""
         ...
-
-
-class PathPreprocessor(Protocol):
-    def preprocess(
-        self, paths: List[List[Tuple[str, str, str]]], departure_date: date
-    ) -> List[List[Tuple[str, str, str]]]:
-        """
-        Preprocess and validate path before building journey.
-        Returns True if path is valid.
-        """
-        ...
