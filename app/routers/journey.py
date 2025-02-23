@@ -8,7 +8,7 @@ from app.dependencies import get_journey_finder
 from app.domain.flight_graph.exceptions import AirportNotFoundError
 
 
-router = APIRouter(tags=["journeys"])
+router = APIRouter(prefix="/journeys", tags=["journeys"])
 
 
 @router.get("/search")
