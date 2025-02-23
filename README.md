@@ -36,6 +36,12 @@ docker compose up
 
 The API will be available at `http://localhost:8000`
 
+## API Documentation
+
+With the server running, you can access:
+- Swagger UI at `http://localhost:8000/docs`
+- ReDoc at `http://localhost:8000/redoc`
+
 ## API Endpoints
 
 ### Search Journeys
