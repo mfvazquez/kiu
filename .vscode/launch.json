@@ -13,17 +13,6 @@
             "justMyCode": true
         },
         {
-            "name": "Debug main.py",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${workspaceFolder}/app/main.py",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}"
-            }
-        },
-        {
             "name": "Debug pytest",
             "type": "debugpy",
             "request": "launch",
