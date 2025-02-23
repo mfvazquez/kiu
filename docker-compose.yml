@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - FLIGHT_EVENTS_URL=${FLIGHT_EVENTS_URL}
+      - MIN_WAIT_TIME_HOURS=${MIN_WAIT_TIME_HOURS:-1}
+      - MAX_WAIT_TIME_HOURS=${MAX_WAIT_TIME_HOURS:-4}
+      - MAX_FLIGHT_DURATION_HOURS=${MAX_FLIGHT_DURATION_HOURS:-24}
+      - MAX_FLIGHT_EVENTS=${MAX_FLIGHT_EVENTS:-2}
+      - CACHE_TTL_SECONDS=${CACHE_TTL_SECONDS:-600}
+    volumes:
+      - ./app:/app/app
