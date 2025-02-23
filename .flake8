@@ -1,0 +1,6 @@
+[flake8]
+max-line-length = 88
+extend-ignore = E203
+exclude = __init__.py
+per-file-ignores =
+    tests/*:S101,S106,E402 

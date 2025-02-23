@@ -1,0 +1,94 @@
+name: Python Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Run mypy
+      run: |
+        mypy --explicit-package-bases app
+
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8
+
+    - name: Run flake8
+      run: |
+        flake8 app tests --exclude=__init__.py
+
+  pytest-unit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Run pytest
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+      run: |
+        pytest tests/unit/
+
+  pytest-integration:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements-dev.txt
+
+    - name: Run pytest
+      env:
+        PYTHONPATH: ${{ github.workspace }}
+        FLIGHT_EVENTS_URL: "https://mock.apidog.com/m1/814105-793312-default/flight-events"
+        MIN_WAIT_TIME_HOURS: "1"
+        MAX_WAIT_TIME_HOURS: "4"
+        MAX_FLIGHT_DURATION_HOURS: "24"
+        MAX_FLIGHT_EVENTS: "2"
+        CACHE_TTL_SECONDS: "600"
+      run: |
+        pytest tests/integration/
