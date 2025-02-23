@@ -10,8 +10,8 @@ class APIFlightEventsProvider:
     def __init__(self, api_url: Optional[str] = None):
         self.service = FlightEventsAPIService(api_url)
 
-    def get_flight_events(self) -> List[FlightEvent]:
-        return self.service.get_flight_events()
+    async def get_flight_events(self) -> List[FlightEvent]:
+        return await self.service.get_flight_events()
 
 
 PROVIDERS: Dict[str, Type[FlightEventsProvider]] = {
