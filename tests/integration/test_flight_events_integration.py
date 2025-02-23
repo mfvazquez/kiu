@@ -5,7 +5,6 @@ from fastapi import status
 
 @pytest.mark.asyncio
 async def test_real_flight_events_api(test_app: AsyncClient):
-    """Test against real mock API"""
     response = await test_app.get(
         "/search",
         params={"from": "MAD", "to": "BUE", "departure_date": "2021-12-31"},
@@ -31,7 +30,6 @@ async def test_real_flight_events_api(test_app: AsyncClient):
 async def test_real_flight_events_api_with_unexisting_airport_destination(
     test_app: AsyncClient,
 ):
-    """Test against real mock API"""
     response = await test_app.get(
         "/search",
         params={"from": "MAD", "to": "XXX", "departure_date": "2021-12-31"},
@@ -43,7 +41,6 @@ async def test_real_flight_events_api_with_unexisting_airport_destination(
 async def test_real_flight_events_api_with_unexisting_airport_origin(
     test_app: AsyncClient,
 ):
-    """Test against real mock API"""
     response = await test_app.get(
         "/search",
         params={"from": "XXX", "to": "BUE", "departure_date": "2021-12-31"},
@@ -55,7 +52,6 @@ async def test_real_flight_events_api_with_unexisting_airport_origin(
 async def test_real_flight_events_api_with_existing_airports_and_no_route(
     test_app: AsyncClient,
 ):
-    """Test against real mock API"""
     response = await test_app.get(
         "/search",
         params={"from": "BUE", "to": "MAD", "departure_date": "2021-12-31"},
