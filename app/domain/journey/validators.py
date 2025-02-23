@@ -31,7 +31,7 @@ class DefaultJourneyValidator:
         self, flight_datetime: datetime, departure_date: date
     ) -> bool:
         """Check if flight departs on or after the departure date"""
-        return flight_datetime.date() >= departure_date
+        return flight_datetime.date() == departure_date
 
     def is_valid_total_time(self, journey: Journey) -> bool:
         """Check if total journey time is within limits"""

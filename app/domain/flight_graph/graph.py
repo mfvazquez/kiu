@@ -2,7 +2,7 @@ import networkx as nx
 from typing import List, Tuple
 
 from app.services.flight_events import FlightEvent
-from .exceptions import EdgeNotFoundError
+from .exceptions import EdgeNotFoundError, AirportNotFoundError
 
 
 class FlightGraph:
@@ -61,7 +61,17 @@ class FlightGraph:
         Returns:
             List of paths, where each path is a list of edges
             Each edge is a tuple of (from_city, to_city, edge_key)
+
+        Raises:
+            AirportNotFoundError: If origin or destination city doesn't exist
         """
+        if not self.graph.has_node(origin):
+            raise AirportNotFoundError(f"Origin city '{origin}' not found")
+        if not self.graph.has_node(destination):
+            raise AirportNotFoundError(
+                f"Destination city '{destination}' not found"
+            )
+
         return list(
             nx.all_simple_edge_paths(  # type: ignore[arg-type]
                 self.graph,

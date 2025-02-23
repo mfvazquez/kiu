@@ -10,3 +10,9 @@ class EdgeNotFoundError(FlightGraphError):
     def __init__(self, edge: tuple):
         self.edge = edge
         super().__init__(f"Edge {edge} does not exist in the graph")
+
+
+class AirportNotFoundError(FlightGraphError):
+    """Raised when trying to access a non-existent airport in the graph"""
+
+    pass
