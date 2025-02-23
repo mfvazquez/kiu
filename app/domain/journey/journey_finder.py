@@ -54,12 +54,14 @@ class JourneyFinder:
         all_paths = self.flight_graph.find_paths(
             origin, destination, self.max_flight_events
         )
+        # Filter paths based on departure date and connection time
         paths = self.preprocessor.preprocess(all_paths, departure_date)
 
         journeys = []
         for path in paths:
             flight_path = self.path_builder.build_path(path, self.flight_graph)
             journey = Journey(connections=len(path) - 1, path=flight_path)
+            # Validate total journey time
             if not self.validator.is_valid_total_time(journey):
                 continue
 
