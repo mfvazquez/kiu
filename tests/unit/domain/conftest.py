@@ -61,6 +61,14 @@ def sample_flights():
             departure_datetime=datetime(2024, 9, 13, 15, 0),
             arrival_datetime=datetime(2024, 9, 13, 16, 30),
         ),
+        # NY -> TYO flights
+        FlightEvent(
+            flight_number="NH100",
+            departure_city="NY",
+            arrival_city="TYO",
+            departure_datetime=datetime(2024, 9, 13, 15, 0),
+            arrival_datetime=datetime(2024, 9, 13, 16, 30),
+        ),
     ]
 
 

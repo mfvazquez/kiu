@@ -3,7 +3,10 @@ from datetime import datetime
 from typing import List
 from app.domain.flight_graph import FlightGraph
 from app.services.flight_events import FlightEvent
-from app.domain.flight_graph.exceptions import EdgeNotFoundError
+from app.domain.flight_graph.exceptions import (
+    EdgeNotFoundError,
+    AirportNotFoundError,
+)
 
 
 def test_add_flight(
@@ -23,13 +26,14 @@ def test_add_flight(
 def test_multiple_flights_same_route(flight_graph_with_flights: FlightGraph):
     """Should handle multiple flights between same cities"""
     edges = list(flight_graph_with_flights.graph.edges())
-    assert len(edges) == 6
+    assert len(edges) == 7
     assert edges[0] == ("BUE", "LON")
     assert edges[1] == ("BUE", "MAD")
     assert edges[2] == ("BUE", "MAD")
     assert edges[3] == ("MAD", "LON")
     assert edges[4] == ("MAD", "BER")
     assert edges[5] == ("BER", "LON")
+    assert edges[6] == ("NY", "TYO")
 
 
 def test_edge_key_uniqueness(flight_graph_with_flights: FlightGraph):
@@ -103,10 +107,9 @@ def test_get_flight_details_of_nonexistent_edge(
             ("BUE", "BER", "BA123_2024-09-12T08:00:00")
         )
 
-    assert (
-        str(exc_info.value)
-        == ("Edge ('BUE', 'BER', 'BA123_2024-09-12T08:00:00')"
-            " does not exist in the graph")
+    assert str(exc_info.value) == (
+        "Edge ('BUE', 'BER', 'BA123_2024-09-12T08:00:00')"
+        " does not exist in the graph"
     )
 
 
@@ -144,11 +147,48 @@ def test_find_paths_with_connections(flight_graph_with_flights: FlightGraph):
     ]
 
 
-def test_find_paths_of_unreachable_cities(
+def test_find_paths_nonexistent_origin(flight_graph_with_flights: FlightGraph):
+    """Should raise AirportNotFoundError when origin doesn't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        flight_graph_with_flights.find_paths(
+            origin="XXX",  # Non-existent airport
+            destination="LON",
+            max_flights=2,
+        )
+    assert "Origin city 'XXX' not found" in str(exc_info.value)
+
+
+def test_find_paths_nonexistent_destination(
     flight_graph_with_flights: FlightGraph,
 ):
-    """Should find valid paths between cities with connections"""
+    """Should raise AirportNotFoundError when destination doesn't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        flight_graph_with_flights.find_paths(
+            origin="BUE",
+            destination="XXX",  # Non-existent airport
+            max_flights=2,
+        )
+    assert "Destination city 'XXX' not found" in str(exc_info.value)
+
+
+def test_find_paths_both_airports_nonexistent(
+    flight_graph_with_flights: FlightGraph,
+):
+    """Should raise AirportNotFoundError when both airports don't exist"""
+    with pytest.raises(AirportNotFoundError) as exc_info:
+        flight_graph_with_flights.find_paths(
+            origin="YYY", destination="XXX", max_flights=2
+        )
+    assert "Origin city 'YYY' not found" in str(exc_info.value)
+
+
+def test_find_paths_no_route_between_existing_airports(
+    flight_graph_with_flights: FlightGraph,
+):
+    """Should return empty list when no route exists between valid airports"""
     paths = flight_graph_with_flights.find_paths(
-        origin="BUE", destination="PAR", max_flights=2
+        origin="BUE",
+        destination="NY",
+        max_flights=2,
     )
     assert len(paths) == 0
