@@ -53,10 +53,22 @@ class FlightGraph:
         destination: str,
         max_flights: int
     ) -> List[List[Tuple[str, str, str]]]:
-        return list(nx.all_simple_edge_paths(
-            self.graph,
-            origin,
-            destination,
+        """
+        Find all possible paths between origin and destination
+        
+        Args:
+            origin: Departure city
+            destination: Arrival city
+            max_flights: Maximum number of flights in path
+            
+        Returns:
+            List of paths, where each path is a list of edges
+            Each edge is a tuple of (from_city, to_city, edge_key)
+        """
+        return list(nx.all_simple_edge_paths(  # type: ignore[arg-type]
+            self.graph,  # type: ignore[arg-type]
+            origin,  # type: ignore[arg-type]
+            destination,  # type: ignore[arg-type]
             cutoff=max_flights
         ))
         
