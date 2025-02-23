@@ -68,13 +68,21 @@ def complex_graph():
         ),
         # Invalid connection (departure before arrival)
         FlightEvent(
-            flight_number="IB302",
+            flight_number="IB303",
             departure_city="MAD",
             arrival_city="LON",
             departure_datetime=datetime(
                 2024, 9, 12, 22, 30
             ),  # Only 30min connection
             arrival_datetime=datetime(2024, 9, 12, 4, 0),
+        ),
+        # Invalid flight ( total time too long )
+        FlightEvent(
+            flight_number="BA201",
+            departure_city="BUE",
+            arrival_city="LON",
+            departure_datetime=datetime(2024, 9, 12, 9, 0),
+            arrival_datetime=datetime(2024, 9, 13, 9, 1),
         ),
     ]
 
