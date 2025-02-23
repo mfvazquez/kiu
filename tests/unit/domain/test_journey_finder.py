@@ -138,3 +138,18 @@ def test_max_flight_events_limit(complex_journey_finder: JourneyFinder):
 
     assert len(journeys) == 1
     assert journeys[0].connections == 0
+
+
+def test_flight_search_before_departure_date_returns_empty_list(
+    complex_journey_finder: JourneyFinder,
+):
+    """Should return empty list if departure date is in the past"""
+    complex_journey_finder.max_flight_events = 1
+
+    journeys = complex_journey_finder.find_journeys(
+        origin="BUE",
+        destination="LON",
+        departure_date=datetime(1990, 5, 8).date(),
+    )
+
+    assert len(journeys) == 0
